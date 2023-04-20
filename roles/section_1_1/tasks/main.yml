@@ -1,0 +1,30 @@
+---
+# 1.1 Filesystem Configuration
+# 1.1.1 Disable unused filesystems
+- name: 1.1.1.1 Ensure mounting of cramfs filesystems is disabled
+  ansible.builtin.modprobe:
+    name: cramfs
+    state: absent
+
+- name: 1.1.1.2 Ensure mounting of vFAT filesystems is disabled
+  ansible.builtin.modprobe:
+    name: vfat
+    state: absent
+
+# 1.1.2 Ensure separate partition exists for /tmp
+- name: 1.1.2 Ensure separate partition exists for /tmp
+  ansible.builtin.mount:
+    path: /tmp
+    src: /dev/tmp_partition
+    fstype: ext4
+    opts: defaults,nodev,nosuid,noexec
+    state: mounted
+  when: separate_tmp_partition.stat.exists
+
+- name: Check if separate /tmp partition exists
+  ansible.builtin.stat:
+    path: /dev/tmp_partition
+  register: separate_tmp_partition
+  check_mode: yes
+  changed_when: false
+

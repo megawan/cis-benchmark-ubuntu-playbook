@@ -1,0 +1,6 @@
+---
+# 2.8 Ensure DNS server is not installed
+- name: 2.8 Ensure DNS server is not installed
+  ansible.builtin.package:
+    name: bind9
+    state: absent

@@ -1,0 +1,6 @@
+---
+# 2.26 Ensure telnet client is not installed
+- name: 2.26 Ensure telnet client is not installed
+  ansible.builtin.package:
+    name: telnet
+    state: absent

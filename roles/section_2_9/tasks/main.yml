@@ -1,0 +1,6 @@
+---
+# 2.9 Ensure FTP server is not installed
+- name: 2.9 Ensure FTP server is not installed
+  ansible.builtin.package:
+    name: vsftpd
+    state: absent

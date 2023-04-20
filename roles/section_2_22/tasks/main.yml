@@ -1,0 +1,7 @@
+---
+# 2.22 Ensure rsync service is not enabled
+- name: 2.22 Ensure rsync service is not enabled
+  ansible.builtin.systemd:
+    name: rsync
+    enabled: no
+    state: stopped

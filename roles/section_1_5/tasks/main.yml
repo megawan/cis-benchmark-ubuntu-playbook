@@ -1,0 +1,31 @@
+---
+# 1.5 Additional Process Hardening
+# 1.5.1 Ensure XD/NX support is enabled
+# This task is hardware-dependent and may require manual verification.
+
+# 1.5.2 Ensure Address Space Layout Randomization (ASLR) is enabled
+- name: 1.5.2 Ensure Address Space Layout Randomization (ASLR) is enabled
+  ansible.builtin.sysctl:
+    name: kernel.randomize_va_space
+    value: 2
+    state: present
+    sysctl_set: yes
+    reload: yes
+
+# 1.5.3 Ensure prelink is disabled
+- name: 1.5.3 Ensure prelink is disabled
+  block:
+    - name: Check if prelink is installed
+      ansible.builtin.package_facts:
+        manager: auto
+
+    - name: Remove prelink if installed
+      ansible.builtin.package:
+        name: prelink
+        state: absent
+      when: "'prelink' in ansible_facts.packages"
+
+    - name: Undo prelinking if prelink was installed
+      ansible.builtin.command:
+        cmd: prelink -ua
+      when: "'prelink' in ansible_facts.packages"

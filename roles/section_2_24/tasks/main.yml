@@ -1,0 +1,8 @@
+---
+# 2.24 Ensure rsh client is not installed
+- name: 2.24 Ensure rsh client is not installed
+  ansible.builtin.package:
+    name:
+      - rsh-client
+      - rsh-redone-client
+    state: absent

@@ -1,0 +1,6 @@
+---
+# 2.10 Ensure HTTP server is not installed
+- name: 2.10 Ensure HTTP server is not installed
+  ansible.builtin.package:
+    name: apache2
+    state: absent

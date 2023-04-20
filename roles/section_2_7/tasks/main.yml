@@ -1,0 +1,22 @@
+---
+# 2.7 Ensure NFS and RPC are not enabled
+- name: 2.7.1 Ensure NFS is not enabled
+  ansible.builtin.service:
+    name: nfs-server
+    state: stopped
+    enabled: no
+
+- name: 2.7.2 Ensure RPC is not enabled
+  block:
+    - name: Ensure rpcbind service is not enabled
+      ansible.builtin.service:
+        name: rpcbind
+        state: stopped
+        enabled: no
+
+    - name: Ensure rpcbind.socket is not enabled
+      ansible.builtin.systemd:
+        name: rpcbind.socket
+        state: stopped
+        enabled: no
+        daemon_reload: yes

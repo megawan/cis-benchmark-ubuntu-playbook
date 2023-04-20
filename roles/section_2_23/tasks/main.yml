@@ -1,0 +1,6 @@
+---
+# 2.23 Ensure NIS client is not installed
+- name: 2.23 Ensure NIS client is not installed
+  ansible.builtin.package:
+    name: ypbind
+    state: absent

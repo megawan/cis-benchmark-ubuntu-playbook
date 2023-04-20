@@ -1,0 +1,9 @@
+---
+# 2.15 Ensure mail transfer agent is configured for local-only mode
+- name: 2.15 Ensure mail transfer agent is configured for local-only mode
+  ansible.builtin.lineinfile:
+    path: /etc/postfix/main.cf
+    regexp: "^inet_interfaces\\s*="
+    line: "inet_interfaces = loopback-only"
+  notify: restart postfix
+  when: "'postfix' in ansible_facts.packages"

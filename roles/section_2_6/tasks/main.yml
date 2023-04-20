@@ -1,0 +1,6 @@
+---
+# 2.6 Ensure LDAP server is not installed
+- name: 2.6 Ensure LDAP server is not installed
+  ansible.builtin.package:
+    name: slapd
+    state: absent

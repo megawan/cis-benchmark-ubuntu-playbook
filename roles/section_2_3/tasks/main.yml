@@ -1,0 +1,6 @@
+---
+# 2.3 Ensure Avahi Server is not installed
+- name: 2.3 Ensure Avahi Server is not installed
+  ansible.builtin.package:
+    name: avahi-daemon
+    state: absent

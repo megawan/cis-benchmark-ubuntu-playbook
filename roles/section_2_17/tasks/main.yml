@@ -1,0 +1,8 @@
+---
+# 2.17 Ensure rsh server is not installed
+- name: 2.17 Ensure rsh server is not installed
+  ansible.builtin.package:
+    name:
+      - rsh-server
+      - rsh-redone-server
+    state: absent

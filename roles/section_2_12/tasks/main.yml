@@ -1,0 +1,6 @@
+---
+# 2.12 Ensure Samba is not installed
+- name: 2.12 Ensure Samba is not installed
+  ansible.builtin.package:
+    name: samba
+    state: absent

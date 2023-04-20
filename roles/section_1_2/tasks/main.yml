@@ -1,0 +1,48 @@
+---
+# 1.2 Configure Software Updates
+# 1.2.1 Ensure package manager repositories are configured
+
+- name: 1.2.1 Ensure package manager repositories are configured
+  block:
+    - name: Check if universe repository is enabled
+      ansible.builtin.command:
+        cmd: add-apt-repository --list | grep '^deb.*universe'
+      register: universe_repository
+      check_mode: no
+      changed_when: false
+
+    - name: Enable universe repository
+      ansible.builtin.command:
+        cmd: add-apt-repository universe
+      when: universe_repository.stdout == ""
+
+  # Add more tasks for other repositories as needed
+
+# 1.2.2 Ensure GPG keys are configured
+# This task is distribution-specific and may require manual verification.
+
+# 1.2.3 Ensure package manager is using strong cryptography
+- name: 1.2.3 Ensure package manager is using strong cryptography
+  block:
+    - name: Check if APT is using strong cryptography
+      ansible.builtin.lineinfile:
+        path: /etc/apt/apt.conf.d/99strong-crypto
+        line: 'Acquire::https::Download-Only::cipher "{{ item }}";'
+        regexp: 'Acquire::https::Download-Only::cipher "{{ item }}";'
+        state: present
+      loop:
+        - "TLSv1.2"
+        - "TLSv1.3"
+      check_mode: yes
+      register: strong_crypto_check
+      changed_when: false
+
+    - name: Configure APT to use strong cryptography
+      ansible.builtin.lineinfile:
+        path: /etc/apt/apt.conf.d/99strong-crypto
+        line: 'Acquire::https::Download-Only::cipher "{{ item }}";'
+        state: present
+      loop:
+        - "TLSv1.2"
+        - "TLSv1.3"
+      when: strong_crypto_check is changed
