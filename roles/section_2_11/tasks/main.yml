@@ -1,6 +1,0 @@
----
-# 2.11 Ensure IMAP and POP3 server is not installed
-- name: 2.11 Ensure IMAP and POP3 server is not installed
-  ansible.builtin.package:
-    name: dovecot
-    state: absent

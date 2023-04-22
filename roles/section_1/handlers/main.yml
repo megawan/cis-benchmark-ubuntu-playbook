@@ -1,0 +1,8 @@
+---
+# related to section 1.4
+- name: update grub
+  ansible.builtin.command:
+    cmd: update-grub
+
+# related to section 1.7
+- name: restart sshd

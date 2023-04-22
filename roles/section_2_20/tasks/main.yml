@@ -1,6 +1,0 @@
----
-# 2.20 Ensure tftp server is not installed
-- name: 2.20 Ensure tftp server is not installed
-  ansible.builtin.package:
-    name: tftpd
-    state: absent

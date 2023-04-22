@@ -1,6 +1,0 @@
----
-# 2.2 Ensure X Window System is not installed
-- name: 2.2 Ensure X Window System is not installed
-  ansible.builtin.package:
-    name: xserver-xorg
-    state: absent

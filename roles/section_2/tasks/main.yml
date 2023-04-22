@@ -1,0 +1,218 @@
+---
+# 2.1 Time Synchronization
+# 2.1.1 Ensure time synchronization is in use
+# 2.1.1.1 Ensure chrony is configured
+- name: 2.1.1.1 Ensure chrony is configured
+  block:
+    - name: Install chrony
+      ansible.builtin.package:
+        name: chrony
+        state: present
+
+    - name: Ensure chrony is enabled and running
+      ansible.builtin.service:
+        name: chronyd
+        state: started
+        enabled: yes
+
+    - name: Configure chrony
+      ansible.builtin.lineinfile:
+        path: /etc/chrony/chrony.conf
+        regexp: "{{ item.regexp }}"
+        line: "{{ item.line }}"
+        state: "{{ item.state }}"
+      loop:
+        - {regexp: "^server ", line: "server time.example.com iburst", state: "present"}
+        - {regexp: "^allow ", line: "", state: "absent"}
+        - {regexp: "^listen on", line: "", state: "absent"}
+        - {regexp: "^local stratum", line: "", state: "absent"}
+        - {regexp: "^manual", line: "", state: "absent"}
+        - {regexp: "^mlockall", line: "", state: "absent"}
+
+# 2.2 Ensure X Window System is not installed
+- name: 2.2 Ensure X Window System is not installed
+  ansible.builtin.package:
+    name: xserver-xorg
+    state: absent
+
+# 2.3 Ensure Avahi Server is not installed
+- name: 2.3 Ensure Avahi Server is not installed
+  ansible.builtin.package:
+    name: avahi-daemon
+    state: absent
+
+# 2.4 Ensure CUPS is not installed
+- name: 2.4 Ensure CUPS is not installed
+  ansible.builtin.package:
+    name: cups
+    state: absent
+
+# 2.5 Ensure DHCP Server is not installed
+- name: 2.5 Ensure DHCP Server is not installed
+  ansible.builtin.package:
+    name: isc-dhcp-server
+    state: absent
+
+# 2.6 Ensure LDAP server is not installed
+- name: 2.6 Ensure LDAP server is not installed
+  ansible.builtin.package:
+    name: slapd
+    state: absent
+
+# 2.7 Ensure NFS and RPC are not enabled
+- name: 2.7.1 Ensure NFS is not enabled
+  ansible.builtin.service:
+    name: nfs-server
+    state: stopped
+    enabled: no
+
+- name: 2.7.2 Ensure RPC is not enabled
+  block:
+    - name: Ensure rpcbind service is not enabled
+      ansible.builtin.service:
+        name: rpcbind
+        state: stopped
+        enabled: no
+
+    - name: Ensure rpcbind.socket is not enabled
+      ansible.builtin.systemd:
+        name: rpcbind.socket
+        state: stopped
+        enabled: no
+        daemon_reload: yes
+
+# 2.8 Ensure DNS server is not installed
+- name: 2.8 Ensure DNS server is not installed
+  ansible.builtin.package:
+    name: bind9
+    state: absent
+
+# 2.9 Ensure FTP server is not installed
+- name: 2.9 Ensure FTP server is not installed
+  ansible.builtin.package:
+    name: vsftpd
+    state: absent
+
+# 2.10 Ensure HTTP server is not installed
+- name: 2.10 Ensure HTTP server is not installed
+  ansible.builtin.package:
+    name: apache2
+    state: absent
+
+# 2.11 Ensure IMAP and POP3 server is not installed
+- name: 2.11 Ensure IMAP and POP3 server is not installed
+  ansible.builtin.package:
+    name: dovecot
+    state: absent
+
+# 2.12 Ensure Samba is not installed
+- name: 2.12 Ensure Samba is not installed
+  ansible.builtin.package:
+    name: samba
+    state: absent
+
+# 2.13 Ensure HTTP proxy server is not installed
+- name: 2.13 Ensure HTTP proxy server is not installed
+  ansible.builtin.package:
+    name: squid
+    state: absent
+
+# 2.14 Ensure SNMP server is not installed
+- name: 2.14 Ensure SNMP server is not installed
+  ansible.builtin.package:
+    name: snmpd
+    state: absent
+
+# 2.15 Ensure mail transfer agent is configured for local-only mode
+- name: 2.15 Ensure mail transfer agent is configured for local-only mode
+  ansible.builtin.lineinfile:
+    path: /etc/postfix/main.cf
+    regexp: "^inet_interfaces\\s*="
+    line: "inet_interfaces = loopback-only"
+  notify: restart postfix
+  when: "'postfix' in ansible_facts.packages"
+
+# 2.16 Ensure NIS server is not installed
+- name: 2.16 Ensure NIS server is not installed
+  ansible.builtin.package:
+    name: nis
+    state: absent
+
+# 2.17 Ensure rsh server is not installed
+- name: 2.17 Ensure rsh server is not installed
+  ansible.builtin.package:
+    name:
+      - rsh-server
+      - rsh-redone-server
+    state: absent
+
+# 2.18 Ensure talk server is not installed
+- name: 2.18 Ensure talk server is not installed
+  ansible.builtin.package:
+    name:
+      - talk
+      - talkd
+    state: absent
+
+# 2.19 Ensure telnet server is not installed
+- name: 2.19 Ensure telnet server is not installed
+  ansible.builtin.package:
+    name: telnetd
+    state: absent
+
+# 2.20 Ensure tftp server is not installed
+- name: 2.20 Ensure tftp server is not installed
+  ansible.builtin.package:
+    name: tftpd
+    state: absent
+
+ # 2.21 Ensure xinetd is not installed
+- name: 2.21 Ensure xinetd is not installed
+  ansible.builtin.package:
+    name: xinetd
+    state: absent   
+
+# 2.22 Ensure rsync service is not enabled
+- name: 2.22 Ensure rsync service is not enabled
+  ansible.builtin.systemd:
+    name: rsync
+    enabled: no
+    state: stopped
+
+# 2.23 Ensure NIS client is not installed
+- name: 2.23 Ensure NIS client is not installed
+  ansible.builtin.package:
+    name: ypbind
+    state: absent
+
+# 2.24 Ensure rsh client is not installed
+- name: 2.24 Ensure rsh client is not installed
+  ansible.builtin.package:
+    name:
+      - rsh-client
+      - rsh-redone-client
+    state: absent
+
+# 2.25 Ensure talk client is not installed
+- name: 2.25 Ensure talk client is not installed
+  ansible.builtin.package:
+    name: talk
+    state: absent
+
+# 2.26 Ensure telnet client is not installed
+- name: 2.26 Ensure telnet client is not installed
+  ansible.builtin.package:
+    name: telnet
+    state: absent
+
+# 2.27 Ensure tftp client is not installed
+- name: 2.27 Ensure tftp client is not installed
+  ansible.builtin.package:
+    name: tftp
+    state: absent
+
+# 2.28 Ensure ldap-utils is not installed
+- name: 2.28 Ensure ldap-utils is not installed
+  ansible.builtin.package:
+    name: ldap-utils
+    state: absent

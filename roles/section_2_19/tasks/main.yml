@@ -1,6 +1,0 @@
----
-# 2.19 Ensure telnet server is not installed
-- name: 2.19 Ensure telnet server is not installed
-  ansible.builtin.package:
-    name: telnetd
-    state: absent

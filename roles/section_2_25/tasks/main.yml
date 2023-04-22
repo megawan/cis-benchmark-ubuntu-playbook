@@ -1,6 +1,0 @@
----
-# 2.25 Ensure talk client is not installed
-- name: 2.25 Ensure talk client is not installed
-  ansible.builtin.package:
-    name: talk
-    state: absent

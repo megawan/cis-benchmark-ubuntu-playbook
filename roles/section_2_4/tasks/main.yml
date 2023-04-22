@@ -1,6 +1,0 @@
----
-# 2.4 Ensure CUPS is not installed
-- name: 2.4 Ensure CUPS is not installed
-  ansible.builtin.package:
-    name: cups
-    state: absent

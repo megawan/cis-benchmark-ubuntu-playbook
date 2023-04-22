@@ -1,0 +1,6 @@
+---
+# related to section 2.16
+- name: restart postfix
+  ansible.builtin.systemd:
+    name: postfix
+    state: restarted

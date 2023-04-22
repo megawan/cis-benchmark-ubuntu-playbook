@@ -1,6 +1,0 @@
----
-# 2.5 Ensure DHCP Server is not installed
-- name: 2.5 Ensure DHCP Server is not installed
-  ansible.builtin.package:
-    name: isc-dhcp-server
-    state: absent
